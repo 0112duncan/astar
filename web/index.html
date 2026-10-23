@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Autorob A* Map Planner</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="heading">
+        <div>
+          <p class="eyebrow">AUTOROB · A* PLANNER</p>
+          <h1>Map route explorer</h1>
+          <p class="instructions">Create a map, then click a free cell for the start and another for the goal. Your next click begins a fresh route.</p>
+        </div>
+        <div class="controls">
+          <span id="connection" class="connection offline">Connecting…</span>
+          <button id="new-map" type="button" disabled>New map</button>
+        </div>
+      </section>
+
+      <section class="map-card" aria-label="Occupancy grid map">
+        <div class="map-toolbar">
+          <span id="map-details">Waiting for a map…</span>
+          <span class="legend"><i class="free"></i>Free <i class="blocked"></i>Blocked <i class="route"></i>Route</span>
+        </div>
+        <div id="canvas-wrap" class="canvas-wrap">
+          <canvas id="map-canvas" aria-label="Click a free map cell to select a start or goal"></canvas>
+          <p id="empty-state" class="empty-state">Press “New map” to publish a map.</p>
+        </div>
+      </section>
+      <p id="status" class="status" role="status">Connecting to the Autorob gateway…</p>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

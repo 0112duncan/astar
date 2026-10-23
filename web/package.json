@@ -1,0 +1,9 @@
+{
+  "name": "autorob-astar-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Browser visualizer and map generator for the Autorob A* project",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
