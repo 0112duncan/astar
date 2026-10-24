@@ -57,7 +57,18 @@ function startMapService() {
               values: {}, result, status,
             });
           };
-          const mapNode = spawn(path.join(WEB_ROOT, '..', 'build', 'map_node'), [], {
+          const width = request.args?.width ?? 10;
+          const height = request.args?.height ?? 10;
+          if (!Number.isInteger(width) || !Number.isInteger(height) ||
+              width < 1 || height < 1 || width > 100 || height > 100) {
+            reply(false, 'width and height must be integers from 1 to 100');
+            continue;
+          }
+          if (width * height < 2) {
+            reply(false, 'map must contain at least two cells');
+            continue;
+          }
+          const mapNode = spawn(path.join(WEB_ROOT, '..', 'build', 'map_node'), [String(width), String(height)], {
             cwd: path.join(WEB_ROOT, '..'),
             stdio: 'ignore',
           });

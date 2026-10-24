@@ -5,6 +5,8 @@ const statusElement = document.querySelector('#status');
 const detailsElement = document.querySelector('#map-details');
 const connectionElement = document.querySelector('#connection');
 const newMapButton = document.querySelector('#new-map');
+const mapWidthInput = document.querySelector('#map-width');
+const mapHeightInput = document.querySelector('#map-height');
 
 let socket;
 let map;
@@ -184,10 +186,22 @@ canvas.addEventListener('click', (event) => {
 });
 
 newMapButton.addEventListener('click', async () => {
+  const width = Number(mapWidthInput.value);
+  const height = Number(mapHeightInput.value);
+  if (!Number.isInteger(width) || !Number.isInteger(height) ||
+      width < 1 || height < 1 || width > 100 || height > 100) {
+    status('Width and height must be whole numbers from 1 to 100.', true);
+    return;
+  }
+  if (width * height < 2) {
+    status('The map must contain at least two cells.', true);
+    return;
+  }
+
   newMapButton.disabled = true;
   status('Creating and publishing a new map…');
   try {
-    const response = await callService('/create_map', {});
+    const response = await callService('/create_map', { width, height });
     if (!response.result) throw new Error(response.status || 'Map service failed.');
     // The /map publication normally arrives first, but using the returned map
     // also handles an unusually fast service response reliably.

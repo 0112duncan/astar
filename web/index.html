@@ -16,6 +16,14 @@
         </div>
         <div class="controls">
           <span id="connection" class="connection offline">Connecting…</span>
+          <label class="dimension-field" for="map-width">
+            <span>Width</span>
+            <input id="map-width" type="number" min="1" max="100" step="1" value="10" inputmode="numeric">
+          </label>
+          <label class="dimension-field" for="map-height">
+            <span>Height</span>
+            <input id="map-height" type="number" min="1" max="100" step="1" value="10" inputmode="numeric">
+          </label>
           <button id="new-map" type="button" disabled>New map</button>
         </div>
       </section>

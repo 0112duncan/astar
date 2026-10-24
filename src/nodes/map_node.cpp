@@ -3,6 +3,21 @@
 #include <algorithm>
 #include <stdexcept>
 #include <cmath>
+#include <iostream>
+#include <string>
+
+namespace {
+
+int parse_dimension(const char* text, const char* name) {
+  std::size_t parsed = 0;
+  int value = std::stoi(text, &parsed);
+  if (text[parsed] != '\0' || value < 1 || value > 100) {
+    throw std::invalid_argument(std::string(name) + " must be an integer from 1 to 100");
+  }
+  return value;
+}
+
+}  // namespace
 
 //function to create random map
 autorob::Json create_map(
@@ -12,7 +27,7 @@ autorob::Json create_map(
   double origin_x,
   double origin_y
 ){
-  if (width * height < 2) {
+  if (width <= 0 || height <= 0 || width * height < 2) {
       throw std::invalid_argument("map too small");
   }
 
@@ -21,13 +36,13 @@ autorob::Json create_map(
   }
 
   std::vector<int> map_arr(width * height, 25);
-  int random_obstacle_amount = height*width/20;
+  int random_obstacle_amount = height*width/50;
   //put the random obstacle spot and grow the obstacle
   std::srand(std::time(nullptr));
   for (int i=0; i<random_obstacle_amount; i++){
     int spot = (std::rand()%(height*width));
 
-    int max_size = std::max(1, std::min(width, height) / 2);
+    int max_size = std::max(1, std::min(width, height) / 4);
     int size = 1 + std::rand() % max_size;
 
     int cx = spot%width;
@@ -79,10 +94,21 @@ autorob::Json create_map(
   return map;
 }
 
-int main() {
-  autorob::Node node("map_node");
-  node.advertise("/map", "nav_msgs/OccupancyGrid");
-  
-  node.publish("/map", create_map(10, 10, 0.5, -1.0, 2.0));
-  return 0;  // make map publishes once and exits.
+int main(int argc, char* argv[]) {
+  try {
+    if (argc != 1 && argc != 3) {
+      throw std::invalid_argument("usage: map_node [width height]");
+    }
+    const int width = argc == 3 ? parse_dimension(argv[1], "width") : 10;
+    const int height = argc == 3 ? parse_dimension(argv[2], "height") : 10;
+
+    autorob::Node node("map_node");
+    node.advertise("/map", "nav_msgs/OccupancyGrid");
+
+    node.publish("/map", create_map(width, height, 0.5, -1.0, 2.0));
+    return 0;  // map_node publishes once and exits.
+  } catch (const std::exception& error) {
+    std::cerr << "map_node: " << error.what() << '\n';
+    return 1;
+  }
 }
