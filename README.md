@@ -66,6 +66,13 @@ free cell to begin a new route.
 If no route exists, the status message reports that planning failed. Generate a
 new map or choose a different start and goal.
 
-## How it works
+## How it is organized
 
-The C++ runtime has A* planner, map generator, heap services, and local TCP/JSON hub with a ROS like pub sub system. The browser UI displays the map and route, then sends commands through a small local WebSocket-to-TCP bridge. Map generation and path planning remain in the C++ runtime.
+The C++ runtime contains the A* planner, map generator, heap services, and local
+TCP/JSON hub. The map generator publishes an occupancy grid on `/map`. The A*
+node receives that map, serves planning requests on `/plan_path`, and publishes
+successful routes on `/path`.
+
+The browser UI displays the map and route, then sends commands through a small
+local WebSocket-to-TCP bridge. Map generation and path planning remain in the
+C++ runtime.
