@@ -33,6 +33,4 @@ This project runs an A* path-planning service with a browser interface for creat
 
 5. Open the address printed in the terminal in your web browser. By default, it is [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
-## Video demo
-
 ![A* planner demo](asset/astar_demo.gif)
