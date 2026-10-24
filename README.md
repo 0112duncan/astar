@@ -35,4 +35,4 @@ This project runs an A* path-planning service with a browser interface for creat
 
 ## Video demo
 
-[Watch the A* planner demo](asset/astar_demo.webm)
+![A* planner demo](asset/astar_demo.gif)
